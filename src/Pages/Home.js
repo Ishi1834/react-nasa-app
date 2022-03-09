@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Loading from "../Components/Loading";
 import Container from "../Components/ui/Container";
 import config from "../config";
 
@@ -61,13 +62,7 @@ export default function HomePage() {
     getNewDate(formattedDate);
   }
   if (loadingData) {
-    return (
-      <Container>
-        <div className="d-flex flex-column align-items-center">
-          <h3 data-testid="loading">Loading data from api...</h3>
-        </div>
-      </Container>
-    );
+    return <Loading />;
   }
   return (
     <Container>

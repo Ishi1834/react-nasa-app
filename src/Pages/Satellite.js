@@ -4,38 +4,49 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import Container from "../Components/ui/Container";
 import config from "../config";
+import Loading from "../Components/Loading";
 
 export default function SatellitePage() {
   const [startDate, setStartDate] = useState(new Date("01/01/2021"));
   const [loadingData, setLoadingdata] = useState(true);
   const [apiData, setApiData] = useState([]);
   const [requestNewDate, setRequestNewDate] = useState(false);
+  const [displayErrorMessage, setDisplayErrorMessage] = useState(false);
+  const [location, setLocation] = useState("lon=100.75&lat=1.5");
 
   // set initial state using api response
-  useEffect(async () => {
+  useEffect(() => {
+    // make a function that get gps location
+
     const url = "https://api.nasa.gov/planetary/earth/assets";
-    const location = "lon=100.75&lat=1.5";
     const date = handleDate();
     const dim = 0.15;
     const apiKey = config.api.NASA;
 
-    console.log(date);
     // fetch data from api
-    const response = await fetch(
-      `${url}?${location}&date=${date}&dim=${dim}&api_key=${apiKey}`
-    );
-    const dataResult = await response.json();
-    console.log(dataResult);
+    const fetchData = async () => {
+      const data = await fetch(
+        `${url}?${location}&date=${date}&dim=${dim}&api_key=${apiKey}`
+      ).then((res) => res.json());
 
-    // set state if data is recieved
-    if (dataResult) {
-      setLoadingdata(false);
-      setApiData(dataResult);
-    }
+      // set loading state and display content if data is recieved
+      if (data) {
+        if (data.msg === "No imagery for specified date.") {
+          setLoadingdata(false);
+          setDisplayErrorMessage(true);
+          console.log("No imagery for specified date.");
+        } else {
+          setLoadingdata(false);
+          setApiData(data);
+        }
+      }
+    };
+    fetchData();
   }, [requestNewDate]);
 
   // get a satellite image of a different day
   function handleSubmit() {
+    setLoadingdata(true);
     const date = handleDate();
     setRequestNewDate(true);
     console.log("new date requested: ", date);
@@ -54,13 +65,7 @@ export default function SatellitePage() {
   }
 
   if (loadingData) {
-    return (
-      <Container>
-        <div className="d-flex flex-column align-items-center">
-          <h3 data-testid="loading">Loading data from api...</h3>
-        </div>
-      </Container>
-    );
+    return <Loading />;
   }
   return (
     <Container>
@@ -80,6 +85,9 @@ export default function SatellitePage() {
             scrollableYearDropdown
           />
         </div>
+        {displayErrorMessage ? (
+          <h5 className="text-danger">specified data could not be found</h5>
+        ) : null}
         <button className="btn btn-primary" onClick={handleSubmit}>
           Submit
         </button>
@@ -91,9 +99,9 @@ export default function SatellitePage() {
           className="card-img-top"
           alt="Astronomy picture of the day"
         />
-        <p className="card-text">
-          <small className="text-muted" data-testid="date">
-            Date | {apiData.date}
+        <p className="card-text mt-2">
+          <small className="text-muted " data-testid="date">
+            Date of capture | {apiData.date}
           </small>
         </p>
       </div>

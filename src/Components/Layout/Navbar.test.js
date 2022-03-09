@@ -6,10 +6,6 @@ import "@testing-library/jest-dom/extend-expect";
 
 test("navbar home link render with correct text and link", () => {
   const component = render(
-    /* With MemoryRouter test gives a 
-       useHref() may be used only in the context of a <Router> component.
-       Error
-     */
     <MemoryRouter>
       <Navbar />
     </MemoryRouter>
@@ -22,10 +18,6 @@ test("navbar home link render with correct text and link", () => {
 
 test("navbar satellite link render with correct text", () => {
   const component = render(
-    /* With MemoryRouter test gives a 
-       useHref() may be used only in the context of a <Router> component.
-       Error
-     */
     <MemoryRouter>
       <Navbar />
     </MemoryRouter>

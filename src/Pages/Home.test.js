@@ -1,16 +1,10 @@
-import { render } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { render, screen } from "@testing-library/react";
 import HomePage from "./Home";
 
-test("home page loads with loading api data text", () => {
-  const component = render(
-    <MemoryRouter>
-      <HomePage />
-    </MemoryRouter>
+test("page loads with the correct state", () => {
+  render(<HomePage />);
+
+  expect(screen.getByTestId("loading").textContent).toBe(
+    "Loading data from api..."
   );
-  const LaodingText = component.getByTestId("loading");
-
-  expect(LaodingText.textContent).toBe("Loading data from api...");
 });
-
-// https://www.youtube.com/watch?v=yTZ-txdrHdY

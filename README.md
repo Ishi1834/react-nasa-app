@@ -27,7 +27,7 @@ Users should be able to:
 
 ### Screenshot
 
-![](./pod.jpg)
+![](./screenshot.jpg)
 
 ### Links
 

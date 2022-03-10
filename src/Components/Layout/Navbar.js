@@ -4,7 +4,7 @@ export default function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
-        <div className="navbar-brand">Earth stats</div>
+        <div className="navbar-brand">NASA POD</div>
         <button
           className="navbar-toggler"
           type="button"

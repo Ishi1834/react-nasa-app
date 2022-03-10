@@ -17,6 +17,14 @@ export default function SatellitePage() {
   // set initial state using api response
   useEffect(() => {
     // make a function that get gps location
+    function getLocation() {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        setLocation(
+          `lon=${position.coords.longitude}&lat=${position.coords.latitude}`
+        );
+      });
+    }
+    getLocation();
 
     const url = "https://api.nasa.gov/planetary/earth/assets";
     const date = handleDate();
@@ -42,6 +50,7 @@ export default function SatellitePage() {
       }
     };
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requestNewDate]);
 
   // get a satellite image of a different day
@@ -70,19 +79,22 @@ export default function SatellitePage() {
   return (
     <Container>
       <div className="d-flex flex-column align-items-center">
-        <h3>
+        <h3 className="text-center">
           Select a a month and year to get a satellite image over your location.
         </h3>
+        <p>
+          The satellite passes over each point on earth roughly once every
+          sixteen days.
+        </p>
         <div className="d-flex m-2">
           <DatePicker
             className="text-center btn btn-secondary"
             selected={startDate}
             onChange={(date) => setStartDate(date)}
-            dateFormat="MM/yyyy"
             maxDate={new Date("01/01/2021")}
+            dateFormat="MM/yyyy"
             showMonthYearPicker
-            showYearDropdown
-            scrollableYearDropdown
+            closeOnScroll={true}
           />
         </div>
         {displayErrorMessage ? (

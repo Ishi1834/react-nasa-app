@@ -67,7 +67,10 @@ export default function HomePage() {
   return (
     <Container>
       <div className="d-flex flex-column align-items-center">
-        <h3>Select the date from below to view the image of the day.</h3>
+        <h3 className="text-center">
+          Select the date from below to view the NASA Astronomy image of the
+          day.
+        </h3>
 
         <div className="d-flex m-2">
           <DatePicker
@@ -76,8 +79,11 @@ export default function HomePage() {
             onChange={(date) => setStartDate(date)}
             dateFormat="dd/MM/yyyy"
             maxDate={new Date()}
+            showMonthDropdown
             showYearDropdown
-            scrollableYearDropdown
+            scrollableYearDropdown={true}
+            closeOnScroll={true}
+            dropdownMode="select"
           />
         </div>
         <button className="btn btn-primary" onClick={handleRequest}>
